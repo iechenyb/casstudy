@@ -1,0 +1,7 @@
+org\jasig\services\persondir\support\MultipleAttributeUserDao.class
+Client.class
+org\jasig\cas\ticket\registry\TicketRedisTemplate.class
+org\jasig\cas\web\flow\MyAuthenticationExceptionHandler.class
+org\jasig\cas\adaptors\jdbc\ValidUserQueryDBAuthenticationHandler.class
+org\jasig\cas\authentication\UsernamePasswordCaptchaCredential.class
+org\jasig\cas\ticket\registry\RedisTicketRegistry.class
