@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <web-app id="WebApp_ID" version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <listener>
+    	<listener-class>com.cyb.listener.WebListener</listener-class>
+    </listener>
+	<filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+         <param-name>contextConfigLocation</param-name>
+         <param-value>classpath:applicationContext_*.xml,classpath:spring-cas.xml</param-value>
+    </context-param>
+   
+    <servlet>
+        <servlet-name>springMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.css</url-pattern> 
+    </servlet-mapping> 
+    <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.js</url-pattern> 
+    </servlet-mapping>  
+	<servlet-mapping> 
+	     <servlet-name>default</servlet-name> 
+        <url-pattern>*.png</url-pattern> 
+    </servlet-mapping>
+	<servlet-mapping> 
+	     <servlet-name>default</servlet-name> 
+        <url-pattern>*.jpg</url-pattern> 
+    </servlet-mapping>
+    <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.gif</url-pattern> 
+    </servlet-mapping>
+    <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.jpeg</url-pattern> 
+    </servlet-mapping>
+    <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.ico</url-pattern> 
+    </servlet-mapping>
+    <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.woff</url-pattern> 
+    </servlet-mapping>
+    <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.woff2</url-pattern> 
+    </servlet-mapping>
+    <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.ttf</url-pattern> 
+    </servlet-mapping>
+    <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.map</url-pattern> 
+    </servlet-mapping>
+     <servlet-mapping> 
+         <servlet-name>default</servlet-name> 
+        <url-pattern>*.json</url-pattern> 
+    </servlet-mapping>
+    <error-page>  
+        <error-code>403</error-code>  
+        <location>/403.jsp</location>  
+    </error-page>  
+    <error-page>  
+        <error-code>405</error-code>  
+        <location>/405.jsp</location>  
+    </error-page>  
+    <error-page>  
+        <error-code>500</error-code>  
+        <location>/500.jsp</location>  
+    </error-page>  
+   <!--session过滤器-->
+  <!-- <filter>
+    <filter-name>springSessionRepositoryFilter</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSessionRepositoryFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping> -->
+
+    <filter>
+        <filter-name>CAS Single Sign Out Filter</filter-name>
+        <filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CAS Single Sign Out Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <!--
+	  - Loads the root application context of this web app at startup.
+	  - The application context is then available via
+	  - WebApplicationContextUtils.getWebApplicationContext(servletContext).-->
+    <listener>
+        <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+    </listener>
+      
+ 
+</web-app>

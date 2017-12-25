@@ -1,0 +1,13 @@
+<header role="banner" id="top" class="navbar navbar-static-top navbar-inverse">
+    <div class="container" >
+        <nav role="navigation" class="collapse navbar-collapse ">
+            <ul class="nav navbar-nav">
+                <li ui-sref-active="active" ng-repeat="menu in mynav.links">
+                    <a ui-sref="{{menu.uisref}}">{{menu.name}}</a>
+                </li>
+                <li ui-sref-active="active" style="float:right;">
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>

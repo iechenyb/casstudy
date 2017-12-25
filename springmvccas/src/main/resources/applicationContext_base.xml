@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/mvc
+			http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+			http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task-3.1.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+			">
+
+	<!-- 激活spring的注解. -->
+	<context:annotation-config />
+	<!-- 扫描注解组件并且自动的注入spring beans中. 
+	例如,他会扫描@Controller 和@Service下的文件.所以确保此base-package设置正确. -->
+	<context:component-scan base-package="com.cyb" annotation-config="true"><!--  com.cyb-->
+	     <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	   <!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>	 -->
+	 </context:component-scan>
+	<!-- 配置注解驱动的Spring MVC Controller 的编程模型.注:次标签只在 Servlet MVC工作!--> 
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler/>
+	<!--配置拦截器, 多个拦截器,顺序执行 -->  
+	<!-- <mvc:interceptors>    
+	    <mvc:interceptor>    
+	        匹配的是url路径， 如果不配置或/**,将拦截所有的Controller  
+	        <mvc:mapping path="/" />  
+	        <mvc:mapping path="/user/**" />  
+	        <mvc:mapping path="/test/**" />  
+	        <bean class="com.cyb.interceptor.CommonInterceptor"></bean>    
+	    </mvc:interceptor>  
+	    当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法  
+	</mvc:interceptors>   -->
+	<task:annotation-driven /> 
+	<mvc:resources mapping="/js/**" location="/js/" />   
+	<aop:aspectj-autoproxy proxy-target-class="true" /> 
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	  <property name="location" value="classpath:App.properties" />
+	</bean>
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"></bean>  
+     <!-- 配置 文件上传的支持 上传文件拦截，设置最大上传文件大小  
+      10M=10*1024*1024(B)=10485760 bytes  
+      -->  
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
+    <!-- 定义默认的异常处理页面，当该异常类型的注册时使用 -->  
+    <property name="defaultErrorView" value="error"></property>  
+    <!-- 定义异常处理页面用来获取异常信息的变量名，默认名为exception -->  
+    <property name="exceptionAttribute" value="ex"></property>  
+    <!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常也页名作为值 -->  
+    <property name="exceptionMappings">  
+        <props>  
+             <!--<prop key="cn.basttg.core.exception.BusinessException">error-business</prop>  
+                 <prop key="cn.basttg.core.exception.ParameterException">error-parameter</prop>  
+            	这里还可以继续扩展对不同异常类型的处理 -->  
+        </props>  
+    </property>  
+</bean>  
+</beans>

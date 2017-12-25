@@ -1,0 +1,17 @@
+cas:
+ server:
+   host:
+    url: http://localhost:8087/cas #cas服务地址
+    login_url: /login #登录地址
+    logout_url: /logout #注销地址
+app:
+ server:
+  host:
+    url: http://localhost:8083/ #本应用访问地址
+ login:
+    url: /login #本应用登录地址
+ logout:
+    url: /logout #本应用退出地址
+server:
+    port: 8083
+ #spring:  profiles:    active: cas
