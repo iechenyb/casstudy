@@ -1,0 +1,4 @@
+1 springboot +springsecurity+cas   
+2 退出：ip+port/logout
+3 登陆认证中心统一登录
+4 war工程
