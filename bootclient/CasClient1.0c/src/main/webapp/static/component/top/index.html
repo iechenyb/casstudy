@@ -1,0 +1,30 @@
+
+<div class="am-g" style="border:0px red solid">
+    <div class="am-u-sm-1">&nbsp;</div>
+    <div class="am-u-sm-3"><a target="_self" href="../manager/index.html"><i style="display: block;margin:20px;"><img src="../../static/img/logo.png"  height="50rem"/></i></a></div>
+    <div class="am-u-sm-8">&nbsp;{{link}}</div>
+   <!-- <div class="am-u-sm-3">
+        <a href="#doc-oc-demo1" data-am-offcanvas>
+         <i class="am-icon-reorder am-icon-sm" id="offcanvasbtn" data-am-offcanvas="{target: '#id'}" style="display: block;margin-top:40px;"></i>
+        </a>
+    </div>-->
+</div>
+<style>
+    span a:link {color: #FF0000;text-decoration:none; } 
+    span a:visited {color: #00FF00;text-decoration:none; } 
+    span a:hover {color: #FF00FF} 
+    span a:active {color: #0000FF} 
+    span a{
+        position: relative;
+        display: inline-block;
+        outline: none;
+        text-decoration: none;
+        color: #000;
+        font-size: 32px;
+        padding: 5px 10px;
+        text-decoration:none;
+    }
+    span a:hover::before, span a:hover::after { position: absolute;  text-decoration:none;}
+    span a:hover::before { content: "\5B"; left: -2px; }
+    span a:hover::after { content: "\5D"; right:  -2px; }
+</style>

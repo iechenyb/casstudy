@@ -1,0 +1,17 @@
+cas:
+ server:
+   host:
+    url: http://192.168.16.211:8088/cas #cas服务地址
+    login_url: /login #登录地址
+    logout_url: /logout #注销地址
+app:
+ server:
+  host:
+    url: http://192.168.16.211:8080/casclientboot/ #本应用访问地址+项目名
+ login:
+    url: /login #本应用登录地址
+ logout:
+    url: /logout #本应用退出地址
+server:
+    port: 8080
+    context-path: /casclientboot
