@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: cart #cart order stock  
+  mvc:
+     view:
+       prefix: /
+       suffix: .jsp
+cas:
+ server:
+   domain: cas.kiiik.com
+   ip: 192.168.16.211
+   port: 8088
+   host:
+    url: http://${cas.server.domain}:${cas.server.port}/cas #cas服务地址
+    login_url: /login #登录地址
+    logout_url: /logout #注销地址
+app: 
+ server:
+  host:
+    url: http://${application.domain}:${application.port}/${application.context} #本应用访问地址+项目名
+ login:
+    url: /login #本应用登录地址
+ logout:
+    url: /logout #本应用退出地址
+server:
+    port: ${application.port}
+    context-path: /${application.context}

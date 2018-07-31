@@ -2,3 +2,21 @@
 2 退出：ip+port/logout
 3 登陆认证中心统一登录
 4 war工程
+互信应用信息：
+ car.kiiik.com:8081  购物车系统
+ order.kiiik.com:8082 订单系统
+ stock.kiiik.cn:8083 库存系统
+中央认证服务信息：
+ cas.kiiik.com:8088
+ 测试要点：
+ cart与order同域名  ，与stock不同域。
+ 
+ 
+ 
+ 用户名:<sec:authentication property="name" />, 欢迎来到主页!<br>
+      拥有权限:<sec:authentication property="principal.authorities" /><br>
+      是否可用:<sec:authentication property="principal.enabled" /><br>
+      未被锁定:<sec:authentication property="principal.accountNonLocked" /><br>
+   <sec:authorize ifAnyGranted="ROLE_SUPERVISOR">您是超级管理员,可看到该信息:(这里可以用逗号分隔，加入多个角色你拥有管理员权限)</sec:authorize><br> 
+   <sec:authorize url='/test.jsp'>你登陆成功了可以看到: <a href="<%=path %>/supervisor/index.jsp">管理页面</a></sec:authorize>
+ mv_store=false;

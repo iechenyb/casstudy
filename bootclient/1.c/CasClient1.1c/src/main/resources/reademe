@@ -1,0 +1,12 @@
+1 springboot +springsecurity+cas   
+2 退出：ip+port/logout
+3 登陆认证中心统一登录
+4 war工程
+互信应用信息：
+ car.kiiik.com:8081  购物车系统
+ order.kiiik.com:8082 订单系统
+ stock.kiiik.cn:8083 库存系统
+中央认证服务信息：
+ cas.kiiik.com:8088
+ 测试要点：
+ cart与order同域名  ，与stock不同域。

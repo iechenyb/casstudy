@@ -38,7 +38,7 @@ public class AcmCasConfiguration {
     public ServiceProperties serviceProperties() {
         ServiceProperties serviceProperties = new ServiceProperties();
         // 设置回调的service路径，此为主页路径
-        serviceProperties.setService(acmCasProperties.getAppServicePrefix() + "user/infor");
+        serviceProperties.setService(acmCasProperties.getAppServicePrefix() + "");//默认空页面
         // 对所有的未拥有ticket的访问均需要验证
         serviceProperties.setAuthenticateAllArtifacts(true);
         return serviceProperties;

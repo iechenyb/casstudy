@@ -1,0 +1,1 @@
+INSERT INTO `test`.`t_user` (`id`, `account`, `password`, `valid`) VALUES ('6', 'cj', '28198b369067e88dab9fefe85484dbf4', '1');
