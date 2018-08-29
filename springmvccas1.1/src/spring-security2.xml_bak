@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <beans:beans xmlns="http://www.springframework.org/schema/security" 
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:oauth2="http://www.springframework.org/schema/security/oauth2" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/security 
+	http://www.springframework.org/schema/security/spring-security-3.1.xsd http://www.springframework.org/schema/security/oauth2 
+	http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd"> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+    http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+	<!-- <security:http pattern="/images/**" security="none"/>
+	<security:http pattern="/js/**" security="none" /> -->
+	<security:http pattern="/" security="none" /> <!-- 回调的方法必须有访问权限 -->
+	<security:http pattern="/callback.html" security="none" />
+	<security:http auto-config="true" entry-point-ref="casAuthEntryPoint"
+		use-expressions="true" servlet-api-provision="true" access-denied-page="/WEB-INF/pages/common/noAuth.jsp">
+		<security:intercept-url pattern="/**"
+			access="isAuthenticated()" />
+		<!-- <security:intercept-url pattern="/login.do" access="ROLE_USER,ROLE_ADMIN" 
+			/> <security:intercept-url pattern="/get.html" access="ROLE_USER,ROLE_ADMIN" 
+			/> <security:intercept-url pattern="/packages/*add.do" access="ROLE_USER,ROLE_ADMIN" 
+			/> <security:intercept-url pattern="/packages/*delete.do" access="ROLE_USER,ROLE_ADMIN" 
+			/> <security:intercept-url pattern="/packages/*edit.do" access="ROLE_USER,ROLE_ADMIN" 
+			/> <security:intercept-url pattern="/resource/*.do" access="ROLE_USER,ROLE_ADMIN" 
+			/> <security:intercept-url pattern="/equip/*.do" access="ROLE_ADMIN" /> -->
+		<security:custom-filter ref="casAuthenticationFilter"
+			position="CAS_FILTER" />
+		<security:custom-filter ref="requestSingleLogoutFilter"
+			before="LOGOUT_FILTER" />
+		 <security:custom-filter ref="singleLogoutFilter"
+			before="CAS_FILTER" /> 
+			  <security:logout logout-url="/logout.html" invalidate-session="true" delete-cookies="JSESSIONID" 
+				logout-success-url="http://cas.kiiik.com:8088/cas/logout?service=http://localhost:8088/springsecurity3/callback.html" />
+	</security:http>
+	<!-- 生效 -->
+	<bean id="casAuthEntryPoint"
+		class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">
+		<property name="loginUrl" value="http://cas.kiiik.com:8088/cas/login" />
+		<property name="serviceProperties" ref="casService" />
+	</bean>
+
+	<!-- 在认证管理器中注册cas认证提供器 -->
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			ref="casAuthenticationProvider" />
+	</security:authentication-manager>
+	<bean id="webexpressionHandler"
+		class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+	<bean id="userDetailsService" class="com.cyb.security.UserDetailsService" />
+	<!-- 登录成功后的返回地址 -->
+	<bean id="casService" class="org.springframework.security.cas.ServiceProperties">
+		<property name="service" value="http://localhost:8088/springsecurity3/welcome.html" />
+		<property name="sendRenew" value="false" />
+	</bean>
+	<!-- cas 认证过滤器 -->
+	<bean id="casAuthenticationFilter"
+		class="org.springframework.security.cas.web.CasAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
+		<property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
+		<property name="filterProcessesUrl" value="/welcome.html" />
+	</bean>
+	
+	<!-- cas 认证失败控制器 -->
+	<bean id="authenticationFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+		<property name="defaultFailureUrl" value="/error.jsp" />
+	</bean>
+	<!-- cas 认证成功控制器 -->
+	<bean id="authenticationSuccessHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+		<property name="alwaysUseDefaultTargetUrl" value="false" />
+		<property name="defaultTargetUrl" value="/callback.html" /><!-- 必须可以匿名访问，否则回调失败 -->
+	</bean>
+	<!-- 注销客户端 -->
+	<bean id="singleLogoutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter" />
+	<!-- 注销服务器端 j_spring_cas_security_logout -->
+	<bean id="requestSingleLogoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<constructor-arg value="http://cas.kiiik.com:8088/cas/logout" />
+		<constructor-arg>
+			<bean
+				class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+		</constructor-arg>
+		<property name="filterProcessesUrl" value="/callback1.html" />
+	</bean>
+
+	<!-- cas认证提供器，定义客户端的验证方式 -->
+	<bean id="casAuthenticationProvider"
+		class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
+		<property name="ticketValidator" ref="casTicketValidator"></property>
+		<!--  <property name="ticketValidator" >
+			 <bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+                <constructor-arg index="0" value="https://cas.kiiik.com:8088/cas" />
+            </bean>
+         </property> -->
+		<property name="serviceProperties" ref="casService"></property>
+		<property name="key" value="an_id_for_this_auth_provider_only"></property>
+		<property name="authenticationUserDetailsService" ref="userDetailsService"></property>
+	</bean>
+	<!-- 配置ticket validator -->
+	<bean id="casTicketValidator"
+		class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+		<constructor-arg value="http://cas.kiiik.com:8088/cas/" />
+	</bean>
+
+	<!-- <bean id="authenticationUserDetailsService" class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper"> 
+		<property name="userDetailsService" ref="userDetailsService" /> </bean> -->
+
+	<!-- <bean id="jdbcUserService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl"> 
+		<property name="dataSource" ref="dataSource" /> <property name="enableGroups" 
+		value="true" /> <property name="enableAuthorities" value="false" /> <property 
+		name="usersByUsernameQuery"> <value> select username, password,1 from user 
+		where username = ? </value> </property> <property name="groupAuthoritiesByUsernameQuery"> 
+		<value> select username, department, authority from user where username = 
+		? </value> </property> </bean> <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"> 
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property> <property 
+		name="jdbcUrl" value="jdbc:mysql://cas.kiiik.com:3306/prvn"></property> <property 
+		name="minPoolSize" value="1"></property> <property name="maxPoolSize" value="25"></property> 
+		<property name="initialPoolSize" value="3"></property> <property name="acquireIncrement" 
+		value="1"></property> <property name="maxIdleTime" value="600"></property> 
+		<property name="idleConnectionTestPeriod" value="0"></property> <property 
+		name="acquireRetryAttempts" value="30"></property> <property name="acquireRetryDelay" 
+		value="1000"></property> <property name="breakAfterAcquireFailure" value="true"></property> 
+		<property name="checkoutTimeout" value="0"></property> <property name="testConnectionOnCheckout" 
+		value="false"></property> <property name="properties"> <props> <prop key="user">pvnUser</prop> 
+		<prop key="password">123456</prop> </props> </property> </bean> -->
+</beans>
