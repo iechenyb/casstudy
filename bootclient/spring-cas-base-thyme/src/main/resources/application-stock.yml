@@ -1,0 +1,5 @@
+application: 
+  context: stock #应用上下文
+  port: 8083 #应用端口号
+  domain: stock.kiiik.cn #应用的域名
+  ip: 192.168.16.211 #应用ip地址

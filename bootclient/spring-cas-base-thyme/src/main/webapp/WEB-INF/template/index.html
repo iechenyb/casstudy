@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html 
+xmlns:th="http://www.thymeleaf.org"  
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title sec:authentication="name">首页</title>
+</head>
+<body>
+<!--  <div sec:authorize="hasRole('ROLE_ADD')">
+   ADD
+ </div>	 -->
+ <!-- <div th:text="${#authentication.name}">
+      The value of the "name" property of the authentication object should appear here.
+  </div>  -->
+   <span sec:authorize="isAuthenticated()">
+	欢迎<span sec:authentication="name"></span>
+</span>
+<br/><a href="user/infor">Restful查看用户信息</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="logout?service=user/infor">退出</a><br/>
+	<table border="1" width="50%">
+		<thead>
+			<tr>
+				<td width="20%" colspan="2">系统所有菜单</td>
+			</tr>
+			<tr>
+				<td width="20%">系统菜单</td>
+				<td>接口</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>增加数据</td>
+				<td><a target="_blank" href="api/add">增加数据</a></td>
+			</tr>
+			<tr>
+				<td>删除数据</td>
+				<td><a target="_blank" href="api/delete">删除数据</a></td>
+			</tr>
+			<tr>
+				<td>更新数据</td>
+				<td><a target="_blank" href="api/update">更新数据</a></td>
+			</tr>
+			<tr>
+				<td>查询数据</td>
+				<td><a target="_blank" href="api/query">查询数据</a></td>
+			</tr>
+		</tbody>
+	</table>
+	<hr/>
+	<table border="1" width="50%">
+		<thead>
+			<tr>
+				<td width="20%" colspan="2">当前用户菜单</td>
+			</tr>
+			<tr>
+				<td width="20%">系统菜单</td>
+				<td>接口</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>增加数据(role)</td>
+				<td>
+					 <div sec:authorize="hasRole('ROLE_ADD')">
+						<a target="_blank" href="api/add">增加数据</a>
+					</div>&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td>删除数据(role)</td>
+				<td>
+					 <div sec:authorize="hasRole('ROLE_DELETE')">
+						<a target="_blank" href="api/delete">删除数据</a>
+					</div>&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td>更新数据(url)</td>
+				<td>
+					 <div sec:authorize="hasRole('ROLE_UPDATE')">
+						<a target="_blank" href="api/update">更新数据</a>
+					</div>&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td>查询数据(url)</td>
+				<td>
+					 <div sec:authorize="hasRole('ROLE_QUERY')">
+						<a target="_blank" href="api/query">查询数据</a>
+					</div>&nbsp;
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<hr/>
+	<table border="1" width="50%">
+		<thead>
+			<tr>
+				<td width="20%">系统服务名</td>
+				<td>系统地址入口</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>购物车系统</td>
+				<td><a target="_blank" href="http://cart.kiiik.com:8081/cart">购物车系统入口</a></td>
+			</tr>
+			<tr>
+				<td>订单系统</td>
+				<td><a target="_blank" href="http://order.kiiik.com:8082/order">订单系统入口</a></td>
+			</tr>
+			<tr>
+				<td>库存系统</td>
+				<td> <a target="_blank" href="http://stock.kiiik.cn:8083/stock">库存系统入口</a></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
