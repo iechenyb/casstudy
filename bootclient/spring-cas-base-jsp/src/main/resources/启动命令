@@ -1,0 +1,5 @@
+nohup java -jar cas1.2.jar --spring.profiles.active=cart 2>&1 & cart.out
+nohup java -jar cas1.2.jar --spring.profiles.active=order 2>&1 & order.out
+nohup java -jar cas1.2.jar --spring.profiles.active=stock 2>&1 & stock.out
+
+java -jar demo.jar --server.port=9090

@@ -3,6 +3,7 @@ package com.cyb.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,8 @@ import com.cyb.dao.UserAuthDao;
  * 创建时间: 2017年12月13日
  */
 @Service
-public class AcmCasUserDetailService implements AuthenticationUserDetailsService<CasAssertionAuthenticationToken> {
+public class AcmCasUserDetailService 
+implements AuthenticationUserDetailsService<CasAssertionAuthenticationToken> {
 	private static final Logger USER_SERVICE_LOGGER = LoggerFactory.getLogger(AcmCasUserDetailService.class);
 
 	@Bean
@@ -38,6 +40,8 @@ public class AcmCasUserDetailService implements AuthenticationUserDetailsService
 	
 	public UserDetails loadUserDetails(CasAssertionAuthenticationToken token) throws UsernameNotFoundException {
 		USER_SERVICE_LOGGER.info("回调登录验证-1！！！\n校验成功的登录名为: " + token.getName());
+		Map<String, Object> attr = token.getAssertion().getPrincipal()
+				.getAttributes();
 		//将当前用户的权限信息放到map中。
 		return new User(token.getName(), bCryptPasswordEncoder().encode(token.getName()), getAuthorities(token.getName()));
 	}

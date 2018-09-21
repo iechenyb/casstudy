@@ -1,9 +1,14 @@
 package com.cyb.demo;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.jasig.cas.client.util.AssertionHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.cas.authentication.CasAuthenticationToken;
@@ -26,12 +31,15 @@ import com.cyb.utils.SecurityUtils;
 public class ApiController {
 	
 	Log log = LogFactory.getLog(ApiController.class);
-	
+	//https://blog.csdn.net/elim168/article/details/70882360
 	@GetMapping("query")
 	@ResponseBody
-	public String getP(String username) {
+	public String getP(String username) throws MalformedURLException {
 		System.out.println("查看权限和角色");
-		return "信息列表!";
+		/*AttributePrincipal principal = AssertionHolder.getAssertion().getPrincipal();
+		String proxyTicket = principal.getProxyTicketFor("http://elim:8081/app2/getData.jsp");
+		URL url = new URL("http://elim:8081/app2/getData.jsp?ticket=" + proxyTicket);
+		*/return "信息列表!";
 	}
 
 	@ResponseBody

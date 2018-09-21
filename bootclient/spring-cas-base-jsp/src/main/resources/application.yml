@@ -1,20 +1,27 @@
+env:
+  type: local
 spring:
   redis:
     host: 192.168.108.119
     port: 6011
     database: 7
   profiles:
-    active: stock #cart order stock  
+    active: bms #bms hr oa  
   mvc:
      view:
        prefix: /
        suffix: .jsp
-  datasource:
-    driverClassName: org.h2.Driver  #com.mysql.jdbc.Driver org.h2.Driver
-    url: jdbc:h2:tcp://localhost/D:/data/cas/casdb;AUTO_SERVER=true;MULTI_THREADED=1;
-    #url: jdbc:mysql://localhost:3306/test?useUnicode=true&zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
-    username: root
-    password: 111111
+#  datasource:
+    #driverClassName: org.h2.Driver  #com.mysql.jdbc.Driver org.h2.Driver
+    #url: jdbc:h2:tcp://localhost/D:/data/cas/casdb;AUTO_SERVER=true;MULTI_THREADED=1;
+    #url: jdbc:h2:tcp://localhost/~/iechenyb/data/casdb;AUTO_SERVER=true;MULTI_THREADED=1;
+#    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/cas?useUnicode=true&zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
+#    username: root
+#    password: 111111
+#    url: jdbc:mysql://10.70.66.155:3306/cas?useUnicode=true&zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
+#    username: mysql
+#    password: mysql
   jpa:
     show-sql: true 
     properties: 

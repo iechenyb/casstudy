@@ -3,21 +3,17 @@ package com.cyb.config;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.cyb.dao.UserAuthDao;
@@ -27,7 +23,7 @@ import com.cyb.dao.UserAuthDao;
  * 类描述: 如何在当前环境下知道用户的相关信息？<br>
  * 创建时间: 2017年12月22日
  */
-//@Service
+//@Service 手动创建
 public class MyInvocationSecurityMetadataSourceService 
  implements FilterInvocationSecurityMetadataSource {
 	Log log = LogFactory.getLog(MyInvocationSecurityMetadataSourceService.class);
@@ -49,7 +45,7 @@ public class MyInvocationSecurityMetadataSourceService
 		for(String url:urlRolesData.keySet()){
       	  	Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
             configAttributes.add(new SecurityConfig(urlRolesData.get(url)));//只用一个地址
-            resourceMap.put(url, configAttributes);
+            resourceMap.put(url, configAttributes);//同一个url 可以有多个角色访问
       }
 	}
 	/**

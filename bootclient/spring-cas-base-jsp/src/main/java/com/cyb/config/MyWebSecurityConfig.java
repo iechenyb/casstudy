@@ -19,7 +19,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator;
-import org.springframework.security.web.access.WebInvocationPrivilegeEvaluator;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -47,7 +46,8 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter { /**
     /**
      * 自定义过滤规则及其安全配置
      */
-    @Override
+    @SuppressWarnings("unused")
+	@Override
     protected void configure(HttpSecurity http) throws Exception {
         // HeadersConfigurer
         http.headers().frameOptions().disable();

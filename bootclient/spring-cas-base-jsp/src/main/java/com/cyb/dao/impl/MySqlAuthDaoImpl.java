@@ -22,7 +22,7 @@ import com.cyb.dao.UserAuthDao;
  *类描述: 说点啥<br>
  *创建时间: 2018年7月25日
  */
-//@Repository
+@Repository
 public class MySqlAuthDaoImpl implements UserAuthDao{
 	Log log = LogFactory.getLog(MySqlAuthDaoImpl.class);
 	@Autowired
@@ -33,33 +33,17 @@ public class MySqlAuthDaoImpl implements UserAuthDao{
 	public static String RoleConfig = "roleConfig";
 	public static String Authorities = "Authorities";
     
-	
-	@SuppressWarnings("unchecked")
+	//废弃不用
 	@Override
 	public Map<String, String> roleResources(String username) {
-		String sql = "select tr.url ,tr.name,trr.roleid,a.name "+
-		" from t_resource tr,  T_ROLE_RESOURCE trr "+
-		" left join t_role a  on a.id=trr.roleid"+
-		" where  trr.resourceid  = tr.id "+
-		" and trr.roleid in("+
-		" select ro.id from t_user u ,t_role ro,t_user_role ur"+ 
-		" where  u.id=ur.userid  and account='"+username+"'"+
-		"and ur.roleid=ro.id )";
-		authData.put(username+"#"+RolesResources, null);
-		authData.put(username+"#"+RoleConfig, null);
-		authData.put(username+"#"+Authorities, null);
-		jdbc.queryForList(sql);
-		//将信息组装，放到map中
-		return (Map<String, String>) authData.get(username+"#"+RolesResources);
+		return null;
 	}
 
-
+	//废弃不用
 	public Map<String,ConfigAttribute> roleConfigAttribute(String username){
-    	@SuppressWarnings("unchecked")
-		Map<String,ConfigAttribute> auths = (Map<String, ConfigAttribute>) authData.get(username+"#"+RoleConfig);
-    	return auths;
+    	return null;
     }
-    //list<SimpleGrantedAuthority>
+    //list<SimpleGrantedAuthority> 根据用户名查询用户的角色信息
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities(String username) {
 		List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
@@ -74,13 +58,14 @@ public class MySqlAuthDaoImpl implements UserAuthDao{
 		return list;
 	}
 
-     //map<url,role>
+     //map<url,role> //做个缓存1分钟更新一次
 	@Override
 	public Map<String, String> roleResources() {
+		System.out.println("加载系统角色-资源信息！");
 		Map<String, String> ret = new HashMap<>();
-		String sql = "SELECT b.name,b.note,c.url "+
-	  " FROM T_ROLE_RESOURCE  a,t_ROLE b,t_RESOURCE c "+
-	  " where a.RESOURCEID  =c.id and b.id=a.roleid ";
+			String sql = "SELECT b.name,b.note,c.url "+
+		  " FROM T_ROLE_RESOURCE  a,t_ROLE b,t_RESOURCE c "+
+		  " where a.RESOURCEID  =c.id and b.id=a.roleid ";
 		List<Map<String,Object>> data = jdbc.queryForList(sql);
 		if(!CollectionUtils.isEmpty(data)){
 			for(Map<String,Object> resource :data){

@@ -10,7 +10,7 @@ import javax.persistence.Table;
  *创建时间: 2018年7月27日
  */
 @Entity
-@Table(name="t_user_role")
+@Table(name="t_role")
 public class SysRole {
 	
     @Id

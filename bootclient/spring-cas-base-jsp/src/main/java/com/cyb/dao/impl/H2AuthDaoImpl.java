@@ -21,7 +21,7 @@ import com.cyb.dao.UserAuthDao;
  *类描述: 说点啥<br>
  *创建时间: 2018年7月25日
  */
-@Repository
+//@Repository
 public class H2AuthDaoImpl implements UserAuthDao{
 	Log log = LogFactory.getLog(H2AuthDaoImpl.class);
 	

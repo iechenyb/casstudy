@@ -1,0 +1,5 @@
+application: 
+  context: ccc #应用上下文
+  port: 8081 #应用端口号
+  domain: ccc.kiiik.com #应用的域名
+  ip: 192.168.16.211 #应用ip地址

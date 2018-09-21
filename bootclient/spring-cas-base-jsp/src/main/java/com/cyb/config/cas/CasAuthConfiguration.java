@@ -1,5 +1,8 @@
 package com.cyb.config.cas;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -41,7 +44,7 @@ public class CasAuthConfiguration {
      * 设置客户端service的属性
      * <p>
      * 主要设置请求cas服务端后的回调路径,一般为主页地址，不可为登录地址
-     * 
+     * acmCasProperties.getAppServicePrefix() + "/" 与 acmCasProperties.getAppServicePrefix() + "" 完全不同，需要注意。！！！！
      * </p>
      * 
      * @return
@@ -157,10 +160,9 @@ public class CasAuthConfiguration {
             AuthenticationUserDetailsService<CasAssertionAuthenticationToken> userDetailsService) {
         CasAuthenticationProvider provider = new CasAuthenticationProvider();
         provider.setKey("casProvider");
-        provider.setServiceProperties(serviceProperties());
         provider.setTicketValidator(cas20ServiceTicketValidator());
         provider.setAuthenticationUserDetailsService(userDetailsService);
-        provider.setServiceProperties(serviceProperties());
+        provider.setServiceProperties(serviceProperties());//可以重新定义一个参数
         return provider;
     }
     
@@ -181,7 +183,12 @@ public class CasAuthConfiguration {
     @Bean
     public CasAuthenticationEntryPoint casAuthenticationEntryPoint() {
         CasAuthenticationEntryPoint entryPoint = new CasAuthenticationEntryPoint();
-        entryPoint.setServiceProperties(serviceProperties());
+        ServiceProperties serviceProperties = new ServiceProperties();
+        // 设置回调的service路径，此为主页路径
+        serviceProperties.setService(acmCasProperties.getAppServicePrefix() + "/index");//登出地址 必须放开权限，否则被拦截，或者放在所有的拦截器之前使用。
+        // 对所有的未拥有ticket的访问均需要验证
+        serviceProperties.setAuthenticateAllArtifacts(true);
+        entryPoint.setServiceProperties(serviceProperties());//单独定义一个
         entryPoint.setLoginUrl(acmCasProperties.getCasServerPrefix() + acmCasProperties.getCasServerLoginUrl());
         return entryPoint;
     }
@@ -255,5 +262,40 @@ public class CasAuthConfiguration {
       filterRegistration.setOrder(7); 
       return filterRegistration; 
     } */
-
+   /* @Bean
+	public FilterRegistrationBean ValidationFilterRegistrationBean(){
+		FilterRegistrationBean authenticationFilter = new FilterRegistrationBean();
+		authenticationFilter.setFilter(new Cas20ProxyReceivingTicketValidationFilter());
+		Map<String, String> initParameters = new HashMap<String, String>();
+		initParameters.put("casServerUrlPrefix", "http://cas.kiiik.com:8088/cas");
+		initParameters.put("serverName", "http://aaa.kiiik.com:8081/aaa");
+		authenticationFilter.setInitParameters(initParameters);
+		authenticationFilter.setOrder(1);
+		List<String> urlPatterns = new ArrayList<String>();
+		urlPatterns.add("/*");// 设置匹配的url
+		authenticationFilter.setUrlPatterns(urlPatterns);
+		return authenticationFilter;
+	}
+	
+	@Bean
+	public FilterRegistrationBean casHttpServletRequestWrapperFilter(){
+		FilterRegistrationBean authenticationFilter = new FilterRegistrationBean();
+		authenticationFilter.setFilter(new HttpServletRequestWrapperFilter());
+		authenticationFilter.setOrder(3);
+		List<String> urlPatterns = new ArrayList<String>();
+		urlPatterns.add("/*");// 设置匹配的url
+		authenticationFilter.setUrlPatterns(urlPatterns);
+		return authenticationFilter;
+	}
+	
+	@Bean
+	public FilterRegistrationBean casAssertionThreadLocalFilter(){
+		FilterRegistrationBean authenticationFilter = new FilterRegistrationBean();
+		authenticationFilter.setFilter(new AssertionThreadLocalFilter());
+		authenticationFilter.setOrder(4);
+		List<String> urlPatterns = new ArrayList<String>();
+		urlPatterns.add("/*");// 设置匹配的url
+		authenticationFilter.setUrlPatterns(urlPatterns);
+		return authenticationFilter;
+	}*/
 }

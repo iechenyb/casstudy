@@ -32,10 +32,17 @@ public class CasClientApplication  {
 		return x;
 	}
 
-	@GetMapping("/")
+	/*@GetMapping("/")
 	@ResponseBody
 	public String home() {
 		return "welcome you";
+	}*/
+	
+	@GetMapping("/")
+	public ModelAndView home11(HttpServletRequest req) {
+		ModelAndView view = new ModelAndView();
+		view.setViewName("welcome");
+		return view;
 	}
 	
 	@GetMapping("/index")
